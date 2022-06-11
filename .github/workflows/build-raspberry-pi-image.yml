@@ -1,0 +1,39 @@
+name: Build Raspberry PI image
+
+on:
+  workflow_dispatch:
+
+env:
+  IMG_NAME: Datenvogelhauschen-Raspbian
+  RELEASE: bullseye
+  DEPLOY_COMPRESSION: gz
+  TARGET_HOSTNAME: datenvogelhauschen
+  FIRST_USER_PASS: d4t3nvogelh4usch3n00
+  FIRST_USER_NAME: vogel
+  ENABLE_SSH: 0
+#  STAGE_LIST: "stage0 stage1 dv_inject stage2"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      
+      - name: Install required software for building
+        run: |
+          apt-get install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+          dosfstools libarchive-tools libcap2-bin grep rsync xz-utils file git curl bc \
+          qemu-utils kpartx gpg pigz
+      
+      - name: Build image
+        run: ./build.sh
+        
+      - name: Save artifacts
+        uses: actions/upload-artifacts@v3
+        with:
+          name: raspberry-pi-image
+          path: deploy/*
+          if-no-files-found: error
+        
