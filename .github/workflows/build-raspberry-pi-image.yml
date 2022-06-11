@@ -31,7 +31,7 @@ jobs:
         run: ./build.sh
         
       - name: Save artifacts
-        uses: actions/upload-artifacts@v3
+        uses: actions/upload-artifact@v3
         with:
           name: raspberry-pi-image
           path: deploy/*
