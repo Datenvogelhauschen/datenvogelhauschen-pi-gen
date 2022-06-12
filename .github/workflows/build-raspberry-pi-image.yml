@@ -24,6 +24,6 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: raspberry-pi-image
-          path: deploy/*
+          path: deploy/image*
           if-no-files-found: error
         
